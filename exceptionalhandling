@@ -1,0 +1,20 @@
+pipeline{
+    agent any
+    stages{
+        stage('checkout'){
+            steps{
+                script{
+                    try {
+                        git 'https://github.com/mankinimbom/maven.git'
+                    }
+                    catch('Exception e1') {
+                        mail bcc: '', body: 'jenkins was unable to download the code from the repository', cc: 'nkainelvis@gmail.com', from: '', replyTo: '', subject: 'git clone failed', to: 'nkainelvis@gmail.com'
+                    error('git clone failed')
+                    }
+
+                }
+            }
+        }
+
+    }
+}

@@ -1,0 +1,33 @@
+pipeline{
+    agent any
+    stages{
+        stage('Gitcheckout'){
+            steps{
+                git 'https://github.com/mankinimbom/maven.git'
+            }
+        }
+        stage('Build'){
+            steps{
+                sh 'mvn package'
+            }
+        }
+        stage('Test'){
+            steps{
+               git 'https://github.com/mankinimbom/testingproject.git'
+               sh 'java -jar /var/lib/jenkins/workspace/Pipelinedeclarative/testing.jar'
+               
+             
+            }
+        }
+        stage('Deploy'){
+            steps{
+                deploy adapters: [tomcat9(credentialsId: '87d4983a-8c65-452a-b712-4c2e16b3510e', path: '', url: 'http://172.20.122.164:8085')], contextPath: null, war: '**/*.war'
+            }
+        }
+    }
+}   
+ 
+       
+    
+    
+   
